@@ -39,6 +39,12 @@ class StoreLocationAdmin extends ModelAdmin
     public function getManagedModels()
     {
         $models = parent::getManagedModels();
+        // A keyed entry with a dataClass gets no default title from ModelAdmin, so give every tab one.
+        foreach ($models as $tab => $options) {
+            if (!isset($options['title'])) {
+                $models[$tab]['title'] = singleton($options['dataClass'])->i18n_plural_name();
+            }
+        }
         if (isset($models['closing-days'])) {
             $models['closing-days']['title'] = _t(self::class . '.ClosingDays', 'Closing days (all locations)');
         }

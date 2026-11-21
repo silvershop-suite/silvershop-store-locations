@@ -147,8 +147,8 @@ class StoreLocation extends DataObject
     private static array $summary_fields = [
         'Title' => 'Title',
         'City' => 'City',
-        'StatusLabel' => 'Status',
-        'TodayText' => 'Today',
+        'StatusLabel' => 'StatusLabel',
+        'TodayText' => 'TodayText',
     ];
 
     private static array $searchable_fields = [

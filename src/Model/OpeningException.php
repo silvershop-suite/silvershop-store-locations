@@ -55,9 +55,9 @@ class OpeningException extends DataObject
     private static string $default_sort = '"DateFrom" ASC';
 
     private static array $summary_fields = [
-        'PeriodText' => 'Period',
-        'TypeLabel' => 'Type',
-        'HoursText' => 'Hours',
+        'PeriodText' => 'PeriodText',
+        'TypeLabel' => 'TypeLabel',
+        'HoursText' => 'HoursText',
         'Reason' => 'Reason',
     ];
 

@@ -155,3 +155,9 @@ es:
     SINGULARNAME: 'Página de localizador de tiendas'
     PLURALNAME: 'Páginas de localizador de tiendas'
     DESCRIPTION: 'Muestra sus tiendas con dirección y horario de apertura.'
+  SilverShop\StoreLocations\Hours\TimeRanges:
+    NOT_A_RANGE: '"{text}" no es un horario como 09:00-17:30.'
+    END_ONLY_24: '"{text}": 24:00 solo puede usarse como hora de cierre.'
+    SAME_TIMES: '"{text}": la hora de apertura y la de cierre son iguales. Use 00:00-24:00 para abierto todo el día.'
+    INVALID_TIME: '"{text}" contiene una hora no válida "{time}".'
+    OVERLAP: 'El horario {range} se solapa con otro.'

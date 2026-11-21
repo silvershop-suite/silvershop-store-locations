@@ -155,3 +155,9 @@ it:
     SINGULARNAME: 'Pagina trova negozi'
     PLURALNAME: 'Pagine trova negozi'
     DESCRIPTION: 'Mostra le tue sedi con indirizzo e orari di apertura.'
+  SilverShop\StoreLocations\Hours\TimeRanges:
+    NOT_A_RANGE: '"{text}" non è una fascia oraria come 09:00-17:30.'
+    END_ONLY_24: '"{text}": 24:00 può essere usato solo come orario di chiusura.'
+    SAME_TIMES: '"{text}": orario di apertura e di chiusura coincidono. Usa 00:00-24:00 per aperto tutto il giorno.'
+    INVALID_TIME: '"{text}" contiene un orario non valido "{time}".'
+    OVERLAP: 'La fascia {range} si sovrappone a un''altra.'

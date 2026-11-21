@@ -155,3 +155,9 @@ nl:
     SINGULARNAME: 'Winkellocator-pagina'
     PLURALNAME: 'Winkellocator-pagina''s'
     DESCRIPTION: 'Toont je winkellocaties met adres en openingstijden.'
+  SilverShop\StoreLocations\Hours\TimeRanges:
+    NOT_A_RANGE: '"{text}" is geen tijdvak zoals 09:00-17:30.'
+    END_ONLY_24: '"{text}": 24:00 kan alleen als sluitingstijd.'
+    SAME_TIMES: '"{text}": openings- en sluitingstijd zijn gelijk. Gebruik 00:00-24:00 voor de hele dag open.'
+    INVALID_TIME: '"{text}" bevat een ongeldige tijd "{time}".'
+    OVERLAP: 'Het tijdvak {range} overlapt een ander tijdvak.'

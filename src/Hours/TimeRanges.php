@@ -118,19 +118,20 @@ final class TimeRanges
         $normalised = preg_replace('/\s*(?:–|—|-|\bto\b|\btot\b|\bbis\b)\s*/iu', '-', $text);
         $bits = explode('-', (string) $normalised);
         if (count($bits) !== 2) {
-            throw new InvalidArgumentException(sprintf('"%s" is not a time range like 09:00-17:30.', $text));
+            throw new InvalidArgumentException(_t(self::class . '.NOT_A_RANGE', '"{text}" is not a time range like 09:00-17:30.', ['text' => $text]));
         }
 
         $start = self::parseTime($bits[0], $text);
         $end = self::parseTime($bits[1], $text);
 
         if ($start === '24:00') {
-            throw new InvalidArgumentException(sprintf('"%s": 24:00 can only be used as a closing time.', $text));
+            throw new InvalidArgumentException(_t(self::class . '.END_ONLY_24', '"{text}": 24:00 can only be used as a closing time.', ['text' => $text]));
         }
         if ($start === $end) {
-            throw new InvalidArgumentException(sprintf(
-                '"%s": opening and closing time are the same. Use 00:00-24:00 for open all day.',
-                $text
+            throw new InvalidArgumentException(_t(
+                self::class . '.SAME_TIMES',
+                '"{text}": opening and closing time are the same. Use 00:00-24:00 for open all day.',
+                ['text' => $text]
             ));
         }
 
@@ -141,15 +142,23 @@ final class TimeRanges
     {
         $raw = trim($raw);
         if (!preg_match('/^(\d{1,2})(?:[:.h](\d{2}))?$/i', $raw, $m)) {
-            throw new InvalidArgumentException(sprintf('"%s" contains an invalid time "%s".', $context, $raw));
+            throw new InvalidArgumentException(self::invalidTime($context, $raw));
         }
         $hours = (int) $m[1];
         $minutes = isset($m[2]) ? (int) $m[2] : 0;
         if ($hours > 24 || $minutes > 59 || ($hours === 24 && $minutes !== 0)) {
-            throw new InvalidArgumentException(sprintf('"%s" contains an invalid time "%s".', $context, $raw));
+            throw new InvalidArgumentException(self::invalidTime($context, $raw));
         }
 
         return sprintf('%02d:%02d', $hours, $minutes);
+    }
+
+    private static function invalidTime(string $context, string $raw): string
+    {
+        return _t(self::class . '.INVALID_TIME', '"{text}" contains an invalid time "{time}".', [
+            'text' => $context,
+            'time' => $raw,
+        ]);
     }
 
     /**
@@ -162,7 +171,11 @@ final class TimeRanges
             $start = self::minutes($range[0]);
             $end = self::isOvernight($range) ? self::minutes($range[1]) + 1440 : self::minutes($range[1]);
             if ($previousEnd !== null && $start < $previousEnd) {
-                throw new InvalidArgumentException(sprintf('The range %s-%s overlaps another range.', $range[0], $range[1]));
+                throw new InvalidArgumentException(_t(
+                    self::class . '.OVERLAP',
+                    'The range {range} overlaps another range.',
+                    ['range' => $range[0] . '-' . $range[1]]
+                ));
             }
             $previousEnd = $end;
         }

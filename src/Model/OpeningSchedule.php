@@ -44,7 +44,7 @@ class OpeningSchedule extends DataObject
 
     private static array $summary_fields = [
         'Title' => 'Title',
-        'PeriodText' => 'Period',
+        'PeriodText' => 'PeriodText',
         'Priority' => 'Priority',
     ];
 

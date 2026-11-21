@@ -155,3 +155,9 @@ en:
     SINGULARNAME: 'Store locator page'
     PLURALNAME: 'Store locator pages'
     DESCRIPTION: 'Lists your store locations with address and opening hours.'
+  SilverShop\StoreLocations\Hours\TimeRanges:
+    NOT_A_RANGE: '"{text}" is not a time range like 09:00-17:30.'
+    END_ONLY_24: '"{text}": 24:00 can only be used as a closing time.'
+    SAME_TIMES: '"{text}": opening and closing time are the same. Use 00:00-24:00 for open all day.'
+    INVALID_TIME: '"{text}" contains an invalid time "{time}".'
+    OVERLAP: 'The range {range} overlaps another range.'

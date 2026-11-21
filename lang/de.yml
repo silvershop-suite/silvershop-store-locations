@@ -155,3 +155,9 @@ de:
     SINGULARNAME: 'Filialfinder-Seite'
     PLURALNAME: 'Filialfinder-Seiten'
     DESCRIPTION: 'Zeigt Ihre Standorte mit Adresse und Öffnungszeiten.'
+  SilverShop\StoreLocations\Hours\TimeRanges:
+    NOT_A_RANGE: '"{text}" ist kein Zeitraum wie 09:00-17:30.'
+    END_ONLY_24: '"{text}": 24:00 ist nur als Schließzeit möglich.'
+    SAME_TIMES: '"{text}": Öffnungs- und Schließzeit sind gleich. Verwenden Sie 00:00-24:00 für ganztägig geöffnet.'
+    INVALID_TIME: '"{text}" enthält eine ungültige Uhrzeit "{time}".'
+    OVERLAP: 'Der Zeitraum {range} überschneidet sich mit einem anderen.'

@@ -155,3 +155,9 @@ fr:
     SINGULARNAME: 'Page de localisation des magasins'
     PLURALNAME: 'Pages de localisation des magasins'
     DESCRIPTION: 'Affiche vos magasins avec adresse et horaires d''ouverture.'
+  SilverShop\StoreLocations\Hours\TimeRanges:
+    NOT_A_RANGE: '"{text}" n''est pas une plage horaire comme 09:00-17:30.'
+    END_ONLY_24: '"{text}" : 24:00 ne peut être qu''une heure de fermeture.'
+    SAME_TIMES: '"{text}" : l''heure d''ouverture et l''heure de fermeture sont identiques. Utilisez 00:00-24:00 pour ouvert toute la journée.'
+    INVALID_TIME: '"{text}" contient une heure invalide "{time}".'
+    OVERLAP: 'La plage {range} chevauche une autre plage.'
