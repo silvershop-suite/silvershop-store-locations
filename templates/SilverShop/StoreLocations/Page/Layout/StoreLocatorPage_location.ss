@@ -1,24 +1,27 @@
 <% with $Location %>
 <article class="store-location">
     <p class="store-location__back"><a href="$Up.Link">&larr; <%t SilverShop\StoreLocations\Page\StoreLocatorPage.AllLocations 'All locations' %></a></p>
-    <header class="store-location__header">
-        <h1 class="store-location__title">$Title</h1>
-        <% include SilverShop\StoreLocations\Includes\OpeningStatus %>
+    <header class="store-location__header<% if $Image %> store-location__header--has-image<% end_if %>">
+        <div class="store-location__headline">
+            <h1 class="store-location__title">$Title</h1>
+            <% include SilverShop\StoreLocations\Includes\OpeningStatus %>
+            <% if $Intro %><p class="store-location__intro">$Intro</p><% end_if %>
+        </div>
+        <% if $Image %><div class="store-location__image">$Image.Fill(960,640)</div><% end_if %>
     </header>
-
-    <% if $Image %><div class="store-location__image">$Image.ScaleMaxWidth(1200)</div><% end_if %>
-    <% if $Intro %><p class="store-location__intro">$Intro</p><% end_if %>
 
     <div class="store-location__grid">
         <section class="store-location__section store-location__contact">
             <h2><%t SilverShop\StoreLocations\Page\StoreLocatorPage.Address 'Address' %></h2>
             <address>$FormattedAddress</address>
-            <ul class="store-location__links">
-                <% if $PhoneLink %><li><a href="$PhoneLink">$Phone</a></li><% end_if %>
-                <% if $Email %><li><a href="mailto:$Email.ATT">$Email</a></li><% end_if %>
-                <% if $ContactUrl %><li><a href="$ContactUrl.ATT" rel="noopener"><%t SilverShop\StoreLocations\Page\StoreLocatorPage.Contact 'Contact' %></a></li><% end_if %>
-                <li><a href="$DirectionsLink.ATT" target="_blank" rel="noopener"><%t SilverShop\StoreLocations\Page\StoreLocatorPage.Directions 'Directions' %></a></li>
-            </ul>
+            <p class="store-location__directions"><a class="store-btn" href="$DirectionsLink.ATT" target="_blank" rel="noopener"><%t SilverShop\StoreLocations\Page\StoreLocatorPage.Directions 'Directions' %></a></p>
+            <% if $PhoneLink || $Email || $ContactUrl %>
+                <ul class="store-location__links">
+                    <% if $PhoneLink %><li><a href="$PhoneLink">$Phone</a></li><% end_if %>
+                    <% if $Email %><li><a href="mailto:$Email.ATT">$Email</a></li><% end_if %>
+                    <% if $ContactUrl %><li><a href="$ContactUrl.ATT" rel="noopener"><%t SilverShop\StoreLocations\Page\StoreLocatorPage.Contact 'Contact' %></a></li><% end_if %>
+                </ul>
+            <% end_if %>
             <% if $Features %>
                 <ul class="store-location__features">
                     <% loop $Features %>
@@ -32,7 +35,7 @@
             <h2><%t SilverShop\StoreLocations\Page\StoreLocatorPage.OpeningHours 'Opening hours' %></h2>
             <% include SilverShop\StoreLocations\Includes\OpeningHoursTable %>
             <% include SilverShop\StoreLocations\Includes\UpcomingExceptions %>
-            <h3><%t SilverShop\StoreLocations\Page\StoreLocatorPage.RegularHours 'Regular opening hours' %></h3>
+            <h3 class="store-location__subtitle"><%t SilverShop\StoreLocations\Page\StoreLocatorPage.RegularHours 'Regular opening hours' %></h3>
             <% include SilverShop\StoreLocations\Includes\HoursSummary %>
         </section>
     </div>

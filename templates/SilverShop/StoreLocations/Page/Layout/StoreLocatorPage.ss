@@ -1,6 +1,8 @@
 <div class="store-locator">
-    <h1 class="store-locator__title">$Title</h1>
-    <% if $Content %><div class="store-locator__content">$Content</div><% end_if %>
+    <header class="store-locator__header">
+        <h1 class="store-locator__title">$Title</h1>
+        <% if $Content %><div class="store-locator__content">$Content</div><% end_if %>
+    </header>
 
     <% if $Locations %>
         <ul class="store-locator__list">

@@ -3,7 +3,7 @@
     <tbody>
         <% loop $Week %>
             <tr class="store-hours__row<% if $IsToday %> is-today<% end_if %><% if $IsException %> is-exception<% end_if %><% if $IsClosed %> is-closed<% end_if %>">
-                <th scope="row" class="store-hours__day">$DayName <span class="store-hours__date">$DateLabel</span></th>
+                <th scope="row" class="store-hours__day">$DayName <span class="store-hours__date">$DateLabel</span><% if $IsToday %> <span class="store-hours__today"><%t SilverShop\StoreLocations\Page\StoreLocatorPage.Today 'Today' %></span><% end_if %></th>
                 <td class="store-hours__time">$Text<% if $Reason %> <span class="store-hours__reason">$Reason</span><% end_if %></td>
             </tr>
         <% end_loop %>

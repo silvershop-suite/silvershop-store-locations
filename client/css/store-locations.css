@@ -1,137 +1,698 @@
 /*
- * Minimal, theme-neutral styling for silvershop-suite/store-locations. Uses em (not rem) so it scales with the
- * host theme. Turn off with StoreLocatorPageController.include_css: false when the theme styles it itself.
+ * Theme-neutral styling for silvershop-suite/store-locations.
+ *
+ * - Reads the SilverShop storefront design tokens (--color-*, --radius-*, --shadow-*, --container, --gutter) so the
+ *   pages follow the active skin. Every token has a fallback derived from the host theme's own text colour
+ *   (currentColor mixes), so it also sits quietly in a light or dark theme that has no such tokens.
+ * - Sizes in em (not rem) so it scales with the host theme, whatever its root font size.
+ * - Turn off with StoreLocatorPageController.include_css: false when the theme styles it itself.
  */
-/* Page wrappers: a readable measure when the theme does not already wrap $Layout in a container. */
+
+/* ---- Tokens ---------------------------------------------------------------------------------------------------- */
+.store-locator,
+.store-location,
+.store-card,
+.store-footer,
+.store-status,
+.store-hours,
+.store-hours-summary,
+.store-notices {
+    --sl-ink-2: var(--color-ink-2, color-mix(in srgb, currentColor 72%, transparent));
+    --sl-line: var(--color-line, color-mix(in srgb, currentColor 16%, transparent));
+    --sl-line-strong: var(--color-line-strong, color-mix(in srgb, currentColor 40%, transparent));
+    --sl-surface: var(--color-surface, transparent);
+    --sl-surface-2: var(--color-surface-2, color-mix(in srgb, currentColor 6%, transparent));
+    --sl-radius: var(--radius-card, .625em);
+    --sl-ease: var(--dur-fast, 120ms) var(--ease, ease);
+}
+
+/* ---- Page wrappers: same measure as the theme's .container ----------------------------------------------------- */
 .store-locator,
 .store-location {
     box-sizing: border-box;
-    max-width: 75em;
+    width: min(100% - 2 * var(--gutter, 1em), var(--container, 75em));
     margin-inline: auto;
-    padding: 1.5em 1em 3em;
+    padding-block: 2em 4em;
 }
 
+.store-locator *,
+.store-location *,
+.store-footer * {
+    box-sizing: border-box;
+}
+
+.store-locator a:focus-visible,
+.store-location a:focus-visible,
+.store-card a:focus-visible,
+.store-footer a:focus-visible {
+    outline: var(--focus-w, 2px) solid var(--color-focus, currentColor);
+    outline-offset: var(--focus-offset, 2px);
+    border-radius: .15em;
+}
+
+/* ---- Button (directions, card details) ------------------------------------------------------------------------- */
+.store-btn {
+    --_bg: var(--color-primary, #1a1a1a);
+    --_ink: var(--color-on-primary, #fff);
+    --_bd: var(--_bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    min-height: 2.75em;
+    padding: .55em 1.25em;
+    border: var(--border-w, 1px) solid var(--_bd);
+    border-radius: var(--radius-control, .375em);
+    background: var(--_bg);
+    color: var(--_ink);
+    font-size: .9375em;
+    font-weight: var(--btn-weight, 600);
+    letter-spacing: var(--btn-tracking, 0);
+    text-transform: var(--btn-transform, none);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color var(--sl-ease), border-color var(--sl-ease), color var(--sl-ease);
+}
+
+.store-btn:hover,
+.store-btn:focus-visible {
+    --_bg: var(--color-primary-hover, #000);
+    color: var(--_ink);
+    text-decoration: none;
+}
+
+.store-btn--secondary,
+.store-btn--secondary:hover,
+.store-btn--secondary:focus-visible {
+    --_bg: transparent;
+    --_ink: var(--color-ink, inherit);
+    --_bd: var(--sl-line-strong);
+}
+
+.store-btn--secondary:hover,
+.store-btn--secondary:focus-visible {
+    --_bg: var(--sl-surface-2);
+    --_bd: currentColor;
+}
+
+/* ---- Status badge (text carries the meaning; colour and dot are reinforcement) --------------------------------- */
+.store-status {
+    --_bg: var(--color-surface-3, color-mix(in srgb, currentColor 10%, transparent));
+    --_ink: var(--color-ink, inherit);
+    --_dot: currentColor;
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    max-width: 100%;
+    padding: .28em .7em;
+    border-radius: var(--radius-badge, .3em);
+    background: var(--_bg);
+    color: var(--_ink);
+    font-size: .8125em;
+    font-weight: 600;
+    letter-spacing: .01em;
+    line-height: 1.4;
+}
+
+.store-status::before {
+    content: "";
+    flex: none;
+    width: .55em;
+    height: .55em;
+    border-radius: 50%;
+    background: var(--_dot);
+}
+
+/* Not open right now: hollow dot, so the difference does not rest on hue alone. */
+.store-status.is-closed::before,
+.store-status.is-temporarily-closed::before,
+.store-status.is-permanently-closed::before,
+.store-status.is-coming-soon::before {
+    background: transparent;
+    box-shadow: inset 0 0 0 .14em var(--_dot);
+}
+
+.store-status.is-open {
+    --_bg: var(--color-success-soft, color-mix(in srgb, #2e9e55 16%, transparent));
+    --_ink: var(--color-success, inherit);
+    --_dot: var(--color-success, #2e9e55);
+}
+
+.store-status.is-closed,
+.store-status.is-temporarily-closed,
+.store-status.is-permanently-closed {
+    --_bg: var(--color-danger-soft, color-mix(in srgb, #d6453b 14%, transparent));
+    --_ink: var(--color-danger, inherit);
+    --_dot: var(--color-danger, #d6453b);
+}
+
+/* After is-open / is-closed: the script combines them ("is-open is-closing-soon"). */
+.store-status.is-closing-soon,
+.store-status.is-opening-soon {
+    --_bg: var(--color-warning-soft, color-mix(in srgb, #d08a00 18%, transparent));
+    --_ink: var(--color-warning, inherit);
+    --_dot: var(--color-warning, #d08a00);
+}
+
+.store-status.is-coming-soon {
+    --_bg: var(--color-info-soft, color-mix(in srgb, #3b7dd8 15%, transparent));
+    --_ink: var(--color-info, inherit);
+    --_dot: var(--color-info, #3b7dd8);
+}
+
+/* ---- List page ------------------------------------------------------------------------------------------------- */
+.store-locator__header {
+    margin-bottom: 2em;
+}
+
+.store-locator__title {
+    margin: 0 0 .35em;
+}
+
+.store-locator__content {
+    max-width: 44em;
+    color: var(--sl-ink-2);
+    font-size: 1.0625em;
+}
+
+.store-locator__content > :last-child {
+    margin-bottom: 0;
+}
+
+.store-locator .store-locator__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5em;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18em), 1fr));
+}
+
+.store-locator__item {
+    display: flex;
+    margin: 0;
+}
+
+.store-locator__empty {
+    padding: 2em;
+    border: 1px dashed var(--sl-line-strong);
+    border-radius: var(--sl-radius);
+    color: var(--sl-ink-2);
+    text-align: center;
+}
+
+/* ---- Card ------------------------------------------------------------------------------------------------------ */
+.store-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border: var(--border-w, 1px) solid var(--sl-line);
+    border-radius: var(--sl-radius);
+    background: var(--sl-surface);
+    transition: box-shadow var(--sl-ease), border-color var(--sl-ease);
+}
+
+.store-card:hover,
+.store-card:focus-within {
+    border-color: var(--sl-line-strong);
+    box-shadow: var(--shadow-md, 0 .5em 1.5em -.75em rgb(0 0 0 / .25));
+}
+
+.store-card__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--media-bg, var(--sl-surface-2));
+}
+
+.store-card__media a {
+    display: block;
+    height: 100%;
+}
+
+.store-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur, 220ms) var(--ease, ease);
+}
+
+.store-card:hover .store-card__media img {
+    transform: scale(1.03);
+}
+
+/* Photo-less cards only get a placeholder when a sibling card has a photo, to keep the row aligned. */
+.store-card__media--empty {
+    display: none;
+    place-items: center;
+    background: var(--media-1, var(--sl-surface-2));
+    color: var(--media-ink, var(--sl-ink-2));
+}
+
+.store-locator__list:has(.store-card__media--photo) .store-card__media--empty {
+    display: grid;
+}
+
+.store-card__media--empty svg {
+    width: 2.25em;
+    height: 2.25em;
+    opacity: .7;
+}
+
+.store-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .75em;
+    padding: 1.25em;
+}
+
+.store-card__title {
+    margin: 0;
+    font-size: 1.25em;
+}
+
+.store-card__title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.store-card__title a:hover {
+    text-decoration: underline;
+}
+
+.store-card__address,
+.store-location address,
+.store-footer__address {
+    margin: 0;
+    font-style: normal;
+    line-height: 1.5;
+}
+
+.store-card__address {
+    color: var(--sl-ink-2);
+}
+
+.store-card__today {
+    margin: 0;
+}
+
+.store-card__label {
+    font-weight: 600;
+}
+
+.store-card__reason {
+    color: var(--sl-ink-2);
+}
+
+/* Two classes: outranks a theme reset like ul[class] { margin: 0; padding: 0 }. */
+.store-card .store-card__actions {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em 1.25em;
+    align-self: stretch;
+    margin: auto 0 0;
+    padding: 1em 0 0;
+    border-top: var(--border-w, 1px) solid var(--sl-line);
+    font-size: .9375em;
+}
+
+.store-card__actions li {
+    margin: 0;
+}
+
+.store-card__action--primary {
+    flex: 1 0 100%;
+    margin-top: .35em;
+}
+
+.store-card__action--primary .store-btn {
+    width: 100%;
+    padding-inline: .75em;
+    font-size: 1em;
+}
+
+/* ---- Detail page ----------------------------------------------------------------------------------------------- */
 .store-location__back {
-    margin: 0 0 .75em;
+    margin: 0 0 1.25em;
     font-size: .875em;
+}
+
+.store-location__back a {
+    color: var(--sl-ink-2);
+    text-decoration: none;
+}
+
+.store-location__back a:hover {
+    color: var(--color-ink, inherit);
+    text-decoration: underline;
+}
+
+.store-location__header {
+    display: grid;
+    gap: 1.5em 3em;
+    align-items: center;
+    margin-bottom: 2.5em;
+}
+
+.store-location__headline {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+}
+
+.store-location__title {
+    margin: 0;
+}
+
+.store-location__intro {
+    max-width: 36em;
+    margin: 0;
+    color: var(--sl-ink-2);
+    font-size: 1.125em;
+    line-height: 1.55;
+}
+
+.store-location__image {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: var(--radius-media-lg, var(--sl-radius));
+    background: var(--media-bg, var(--sl-surface-2));
 }
 
 .store-location__image img {
     display: block;
     width: 100%;
-    height: auto;
-    max-height: 26em;
-    object-fit: cover;
-    border-radius: .5em;
-    margin: 1em 0;
-}
-
-.store-locator__list {
-    list-style: none;
-    margin: 1.5em 0;
-    padding: 0;
-    display: grid;
-    gap: 1.25em;
-    grid-template-columns: repeat(auto-fill, minmax(18em, 1fr));
-}
-
-.store-card {
-    border: 1px solid rgba(0, 0, 0, .12);
-    border-radius: .5em;
-    padding: 1.25em;
     height: 100%;
+    object-fit: cover;
 }
-
-.store-card__title {
-    font-size: 1.25em;
-    margin: 0 0 .4em;
-}
-
-.store-card__address,
-.store-location address {
-    font-style: normal;
-    margin: .6em 0;
-}
-
-.store-card__actions,
-.store-location__links,
-.store-location__features {
-    list-style: none;
-    padding: 0;
-    margin: .75em 0 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5em 1.25em;
-}
-
-.store-status {
-    display: inline-block;
-    font-size: .875em;
-    font-weight: 600;
-    padding: .2em .65em;
-    border-radius: 1em;
-    background: rgba(0, 0, 0, .06);
-}
-
-.store-status.is-open { background: #e3f4e8; color: #1d6b35; }
-.store-status.is-closing-soon,
-.store-status.is-opening-soon { background: #fdf1dc; color: #8a5300; }
-.store-status.is-closed,
-.store-status.is-temporarily-closed,
-.store-status.is-permanently-closed { background: #fbe7e7; color: #9b1c1c; }
-.store-status.is-coming-soon { background: #e6eefb; color: #1e4c8f; }
 
 .store-location__grid {
     display: grid;
-    gap: 2em;
-    grid-template-columns: repeat(auto-fit, minmax(18em, 1fr));
-    margin: 1.5em 0;
+    gap: 1.5em;
+    align-items: start;
+    margin: 0 0 2.5em;
 }
 
+.store-location__section {
+    min-width: 0;
+    padding: 1.5em;
+    border: var(--border-w, 1px) solid var(--sl-line);
+    border-radius: var(--sl-radius);
+    background: var(--sl-surface);
+}
+
+.store-location__section > h2 {
+    margin: 0 0 .75em;
+    font-size: 1.375em;
+}
+
+.store-location__subtitle {
+    margin: 1.75em 0 .6em;
+    font-size: 1.0625em;
+}
+
+.store-location__directions {
+    margin: 1.1em 0 0;
+}
+
+.store-location .store-location__links {
+    list-style: none;
+    display: grid;
+    gap: .5em;
+    margin: 1.25em 0 0;
+    padding: 1.25em 0 0;
+    border-top: var(--border-w, 1px) solid var(--sl-line);
+}
+
+.store-location__links li {
+    margin: 0;
+}
+
+.store-location__links a {
+    overflow-wrap: anywhere;
+}
+
+.store-location .store-location__features {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em;
+    margin: 1.25em 0 0;
+    padding: 0;
+}
+
+.store-location__features li {
+    margin: 0;
+    padding: .3em .8em;
+    border-radius: var(--radius-chip, 999px);
+    background: var(--sl-surface-2);
+    font-size: .875em;
+    line-height: 1.4;
+}
+
+.store-location__content {
+    max-width: 46em;
+}
+
+@media (min-width: 48em) {
+    .store-location__header--has-image {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+
+    .store-location__grid {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+        gap: 2em;
+    }
+
+    .store-location__section {
+        padding: 2em;
+    }
+
+    .store-location__contact {
+        position: sticky;
+        top: calc(var(--header-h, 0em) + 1.5em);
+    }
+}
+
+/* ---- Coming week table ----------------------------------------------------------------------------------------- */
 .store-hours {
     width: 100%;
+    margin: 0;
     border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
 }
 
 .store-hours__caption {
     caption-side: top;
-    text-align: left;
-    font-weight: 600;
-    padding-bottom: .4em;
+    padding: 0 0 .6em;
+    color: var(--sl-ink-2);
+    font-size: .875em;
+    text-align: start;
 }
 
 .store-hours th,
 .store-hours td {
-    text-align: left;
-    padding: .35em .5em .35em 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .08);
+    padding: .6em .75em;
+    border: 0;
+    border-bottom: var(--border-w, 1px) solid var(--sl-line);
+    background: none;
+    color: inherit;
+    font-weight: 400;
+    text-align: start;
     vertical-align: top;
 }
 
-.store-hours__date {
-    font-weight: 400;
-    opacity: .7;
-    font-size: .875em;
+.store-hours tr:last-child th,
+.store-hours tr:last-child td {
+    border-bottom: 0;
 }
 
-.store-hours__row.is-today { font-weight: 700; }
-.store-hours__row.is-exception td { color: #8a5300; }
-.store-hours__reason { display: block; font-size: .875em; }
+.store-hours th {
+    width: 52%;
+    font-weight: 500;
+}
 
+.store-hours__date {
+    margin-inline-start: .25em;
+    color: var(--sl-ink-2);
+    font-size: .875em;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.store-hours__today {
+    display: inline-block;
+    margin-inline-start: .35em;
+    padding: .1em .5em;
+    border-radius: var(--radius-badge, .3em);
+    background: var(--color-primary, #1a1a1a);
+    color: var(--color-on-primary, #fff);
+    font-size: .6875em;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    vertical-align: .15em;
+}
+
+.store-hours__row.is-today th,
+.store-hours__row.is-today td {
+    background: var(--sl-surface-2);
+    font-weight: 600;
+}
+
+.store-hours__row.is-today th { border-radius: .4em 0 0 .4em; }
+.store-hours__row.is-today td { border-radius: 0 .4em .4em 0; }
+
+.store-hours__row.is-closed td {
+    color: var(--sl-ink-2);
+}
+
+.store-hours__row.is-exception td {
+    color: var(--color-warning, inherit);
+    font-weight: 600;
+}
+
+.store-hours__reason {
+    display: block;
+    font-size: .875em;
+    font-weight: 400;
+}
+
+/* Narrow screens: date under the day name, more room for the hours. */
+@media (max-width: 34em) {
+    .store-location__section {
+        padding: 1.25em;
+    }
+
+    .store-hours th,
+    .store-hours td {
+        padding-inline: .5em;
+    }
+
+    .store-hours th {
+        width: 42%;
+    }
+
+    .store-hours__date {
+        display: block;
+        margin-inline-start: 0;
+    }
+
+    .store-hours__today {
+        margin: .25em 0 0;
+        vertical-align: 0;
+    }
+}
+
+/* ---- Regular hours summary ------------------------------------------------------------------------------------- */
 .store-hours-summary {
     display: grid;
     grid-template-columns: max-content 1fr;
-    gap: .25em 1.25em;
+    gap: .4em 1.5em;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
 }
 
-.store-hours-summary dd { margin: 0; }
+.store-hours-summary dt {
+    margin: 0;
+    font-weight: 500;
+}
 
+.store-hours-summary dd {
+    margin: 0;
+}
+
+.store-hours-summary dd.is-closed {
+    color: var(--sl-ink-2);
+}
+
+/* ---- Deviating hours notice (same recipe as the theme's .notice--warning) -------------------------------------- */
 .store-notices {
-    margin: 1.25em 0;
-    padding: .75em 1em;
-    border-left: .25em solid #d08a00;
-    background: #fdf6e8;
+    --_tone: var(--color-warning, #d08a00);
+    margin: 1.5em 0 0;
+    padding: 1em 1.15em;
+    border: var(--border-w, 1px) solid color-mix(in srgb, var(--_tone) 35%, transparent);
+    border-radius: var(--radius-md, .5em);
+    background: var(--color-warning-soft, color-mix(in srgb, #d08a00 12%, transparent));
+    font-size: .9375em;
 }
 
-.store-notices__title { margin: 0 0 .4em; font-size: 1em; }
-.store-notices__list { margin: 0; padding-left: 1.1em; }
+.store-notices__title {
+    margin: 0 0 .5em;
+    color: var(--color-warning, inherit);
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.store-notices .store-notices__list {
+    list-style: none;
+    display: grid;
+    gap: .3em;
+    margin: 0;
+    padding: 0;
+    color: var(--color-ink, inherit);
+}
+
+.store-notices__list li {
+    margin: 0;
+}
+
+.store-notices__reason {
+    color: var(--sl-ink-2);
+}
+
+/* ---- Footer include -------------------------------------------------------------------------------------------- */
+.store-footer {
+    display: grid;
+    gap: 1.5em 2em;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13em), 1fr));
+    font-size: .9375em;
+}
+
+.store-footer__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .4em;
+}
+
+.store-footer__name {
+    margin: 0;
+    font-weight: 600;
+}
+
+.store-footer__name a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.store-footer__name a:hover {
+    text-decoration: underline;
+}
+
+.store-footer__address,
+.store-footer__today {
+    margin: 0;
+    opacity: .8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .store-btn,
+    .store-card,
+    .store-card__media img {
+        transition: none;
+    }
+
+    .store-card:hover .store-card__media img {
+        transform: none;
+    }
+}
