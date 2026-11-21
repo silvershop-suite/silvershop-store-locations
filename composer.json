@@ -1,0 +1,72 @@
+{
+    "name": "silvershop-suite/store-locations",
+    "description": "Physical store locations for SilverStripe CMS 6 (SilverShop suite): per-location address, contact and coordinates, regular and seasonal opening hours with exceptions (holidays, closures, special hours), open-now status, store list and detail pages and LocalBusiness JSON-LD. Works with or without SilverShop.",
+    "type": "silverstripe-vendormodule",
+    "keywords": ["silverstripe", "silvershop", "store locations", "opening hours", "store locator", "local business", "openingstijden"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Remy Vaartjes",
+            "email": "remy@xd.nl",
+            "role": "Lead developer"
+        },
+        {
+            "name": "SilverShop-Suite Contributors"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-intl": "*",
+        "silverstripe/framework": "^6.0",
+        "silverstripe/cms": "^6.0",
+        "spatie/opening-hours": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.3",
+        "squizlabs/php_codesniffer": "^3.7",
+        "cambis/silverstan": "^2.1",
+        "silverstripe/sqlite3": "^4"
+    },
+    "suggest": {
+        "silvershop-suite/address-formats": "Per-country address labels, required fields and formatting for the location address.",
+        "silvershop-suite/seo": "Adds each location to the JSON-LD graph (Store / LocalBusiness with opening hours) instead of the module's own standalone JSON-LD.",
+        "silvershop-suite/cms-menu": "Places the Locations admin in the grouped CMS menu.",
+        "silvershop-suite/storefront": "Styles the store list, detail page, opening-hours table and status badge.",
+        "tractorcow/silverstripe-fluent": "Translatable location names, texts and exception reasons.",
+        "symbiote/silverstripe-gridfieldextensions": "Drag-and-drop ordering of locations in the CMS."
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "stan": "vendor/bin/phpstan analyse --configuration=phpstan.neon --memory-limit=-1",
+        "lint": "vendor/bin/phpcs",
+        "lint:fix": "vendor/bin/phpcbf"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/recipe-plugin": true,
+            "silverstripe/vendor-plugin": true,
+            "php-http/discovery": false
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        },
+        "expose": [
+            "client"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "SilverShop\\StoreLocations\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SilverShop\\StoreLocations\\Tests\\": "tests/php/"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}

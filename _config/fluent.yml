@@ -1,0 +1,31 @@
+---
+Name: silvershop-store-locations-fluent
+Only:
+  classexists: 'TractorCow\Fluent\Extension\FluentExtension'
+---
+SilverShop\StoreLocations\Model\StoreLocation:
+  extensions:
+    - TractorCow\Fluent\Extension\FluentExtension
+  translate:
+    - Title
+    - StatusMessage
+    - Intro
+    - Content
+
+SilverShop\StoreLocations\Model\OpeningSchedule:
+  extensions:
+    - TractorCow\Fluent\Extension\FluentExtension
+  translate:
+    - Title
+
+SilverShop\StoreLocations\Model\OpeningException:
+  extensions:
+    - TractorCow\Fluent\Extension\FluentExtension
+  translate:
+    - Reason
+
+SilverShop\StoreLocations\Model\LocationFeature:
+  extensions:
+    - TractorCow\Fluent\Extension\FluentExtension
+  translate:
+    - Title

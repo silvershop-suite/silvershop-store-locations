@@ -1,0 +1,11 @@
+---
+Name: silvershop-store-locations-seo
+After:
+  - '#silvershop-seo'
+Only:
+  moduleexists: 'silvershop-suite/seo'
+---
+# Adds locations to the seo module's JSON-LD graph (Store node on a location page, ItemList on the locator page).
+SilverShop\Seo\StructuredData\StructuredDataRegistry:
+  providers:
+    store-locations: '%$SilverShop\StoreLocations\Seo\StoreLocationSeoProvider'

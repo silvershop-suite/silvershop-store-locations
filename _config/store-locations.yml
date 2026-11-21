@@ -1,0 +1,22 @@
+---
+Name: silvershop-store-locations
+---
+# Locations, opening hours and the store locator. Everything shop-related is optional (see the guarded bridges).
+SilverShop\StoreLocations\Model\StoreLocation:
+  default_country: 'NL'
+  # Empty = the PHP default timezone.
+  default_timezone: ''
+  # google | apple | osm
+  directions_provider: 'google'
+  show_country_in_address: false
+
+SilverShop\StoreLocations\Hours\OpeningCalendar:
+  closing_soon_minutes: 30
+  opening_soon_minutes: 30
+  search_days: 400
+  client_days: 14
+
+SilverShop\StoreLocations\Control\StoreLocatorPageController:
+  include_css: true
+  include_js: true
+  emit_jsonld: true

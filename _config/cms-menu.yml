@@ -1,0 +1,11 @@
+---
+Name: silvershop-store-locations-cms-menu
+After:
+  - '#silvershop-cms-menu'
+Only:
+  moduleexists: 'silvershop-suite/cms-menu'
+---
+# An icon for the Locations section in the grouped CMS menu (it keeps its native position unless a site groups it).
+SilverShop\CmsMenu\CmsMenu:
+  menu_icons:
+    'SilverShop\StoreLocations\Admin\StoreLocationAdmin': 'ss-icon-map-pin'

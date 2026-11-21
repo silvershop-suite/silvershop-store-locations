@@ -1,0 +1,15 @@
+includes:
+    - vendor/cambis/silverstan/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+    # The seo bridge implements an interface from silvershop-suite/seo (a suggest, absent from the standalone
+    # analysis). It is declared behind interface_exists() and only registered via _config/seo.yml when seo is
+    # installed.
+    excludePaths:
+        - src/Seo/StoreLocationSeoProvider.php
+    treatPhpDocTypesAsCertain: false
+    silverstan:
+        includeTestOnly: true

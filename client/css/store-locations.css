@@ -1,0 +1,112 @@
+/*
+ * Minimal, theme-neutral styling for silvershop-suite/store-locations. Uses em (not rem) so it scales with the
+ * host theme. Turn off with StoreLocatorPageController.include_css: false when the theme styles it itself.
+ */
+.store-locator__list {
+    list-style: none;
+    margin: 1.5em 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25em;
+    grid-template-columns: repeat(auto-fill, minmax(18em, 1fr));
+}
+
+.store-card {
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-radius: .5em;
+    padding: 1.25em;
+    height: 100%;
+}
+
+.store-card__title {
+    font-size: 1.25em;
+    margin: 0 0 .4em;
+}
+
+.store-card__address,
+.store-location address {
+    font-style: normal;
+    margin: .6em 0;
+}
+
+.store-card__actions,
+.store-location__links,
+.store-location__features {
+    list-style: none;
+    padding: 0;
+    margin: .75em 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em 1.25em;
+}
+
+.store-status {
+    display: inline-block;
+    font-size: .875em;
+    font-weight: 600;
+    padding: .2em .65em;
+    border-radius: 1em;
+    background: rgba(0, 0, 0, .06);
+}
+
+.store-status.is-open { background: #e3f4e8; color: #1d6b35; }
+.store-status.is-closing-soon,
+.store-status.is-opening-soon { background: #fdf1dc; color: #8a5300; }
+.store-status.is-closed,
+.store-status.is-temporarily-closed,
+.store-status.is-permanently-closed { background: #fbe7e7; color: #9b1c1c; }
+.store-status.is-coming-soon { background: #e6eefb; color: #1e4c8f; }
+
+.store-location__grid {
+    display: grid;
+    gap: 2em;
+    grid-template-columns: repeat(auto-fit, minmax(18em, 1fr));
+    margin: 1.5em 0;
+}
+
+.store-hours {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.store-hours__caption {
+    text-align: left;
+    font-weight: 600;
+    padding-bottom: .4em;
+}
+
+.store-hours th,
+.store-hours td {
+    text-align: left;
+    padding: .35em .5em .35em 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .08);
+    vertical-align: top;
+}
+
+.store-hours__date {
+    font-weight: 400;
+    opacity: .7;
+    font-size: .875em;
+}
+
+.store-hours__row.is-today { font-weight: 700; }
+.store-hours__row.is-exception td { color: #8a5300; }
+.store-hours__reason { display: block; font-size: .875em; }
+
+.store-hours-summary {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: .25em 1.25em;
+}
+
+.store-hours-summary dd { margin: 0; }
+
+.store-notices {
+    margin: 1.25em 0;
+    padding: .75em 1em;
+    border-left: .25em solid #d08a00;
+    background: #fdf6e8;
+}
+
+.store-notices__title { margin: 0 0 .4em; font-size: 1em; }
+.store-notices__list { margin: 0; padding-left: 1.1em; }
