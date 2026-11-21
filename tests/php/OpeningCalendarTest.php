@@ -61,8 +61,8 @@ class OpeningCalendarTest extends SapphireTest
     private function location(?array $week = null, array $extra = []): StoreLocation
     {
         $location = StoreLocation::create(array_merge([
-            'Title' => 'Voorstraat',
-            'Street' => 'Voorstraat',
+            'Title' => 'High Street',
+            'Street' => 'High Street',
             'HouseNumber' => '1',
             'PostalCode' => '2611 JA',
             'City' => 'Delft',
@@ -212,15 +212,15 @@ class OpeningCalendarTest extends SapphireTest
     public function testLocationExceptionBeatsGlobalClosingDay(): void
     {
         $delft = $this->location();
-        $nootdorp = $this->location(null, ['Title' => 'Nootdorp', 'City' => 'Nootdorp']);
+        $riverside = $this->location(null, ['Title' => 'Riverside', 'City' => 'Riverside']);
         $this->exception(null, ['DateFrom' => '2026-12-24', 'Type' => 'Closed', 'Reason' => 'Christmas Eve']);
         $this->exception($delft, ['DateFrom' => '2026-12-24', 'Type' => 'SpecialHours', 'Hours' => '09:00-12:00']);
 
         $this->assertSame([['09:00', '12:00']], $this->rangesOn($delft, '2026-12-24'));
-        $this->assertSame([], $this->rangesOn($nootdorp, '2026-12-24'));
+        $this->assertSame([], $this->rangesOn($riverside, '2026-12-24'));
         $this->assertSame(
             DayHours::SOURCE_GLOBAL_EXCEPTION,
-            $this->calendar()->day($nootdorp, $this->at('2026-12-24 12:00'))->getSource()
+            $this->calendar()->day($riverside, $this->at('2026-12-24 12:00'))->getSource()
         );
     }
 

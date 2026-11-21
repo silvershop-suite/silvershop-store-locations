@@ -43,8 +43,8 @@ class StoreLocationTest extends SapphireTest
     private function make(array $data = []): StoreLocation
     {
         $location = StoreLocation::create(array_merge([
-            'Title' => 'Voorstraat',
-            'Street' => 'Voorstraat',
+            'Title' => 'High Street',
+            'Street' => 'High Street',
             'HouseNumber' => '12a',
             'PostalCode' => '2611 JA',
             'City' => 'Delft',
@@ -60,11 +60,11 @@ class StoreLocationTest extends SapphireTest
 
     public function testURLSegmentIsGeneratedAndUnique(): void
     {
-        $first = $this->make(['Title' => 'Markt Nootdorp']);
-        $second = $this->make(['Title' => 'Markt Nootdorp']);
+        $first = $this->make(['Title' => 'Market Square']);
+        $second = $this->make(['Title' => 'Market Square']);
 
-        $this->assertSame('markt-nootdorp', $first->URLSegment);
-        $this->assertSame('markt-nootdorp-2', $second->URLSegment);
+        $this->assertSame('market-square', $first->URLSegment);
+        $this->assertSame('market-square-2', $second->URLSegment);
     }
 
     public function testDefaultsAndCountryOptions(): void
@@ -108,13 +108,13 @@ class StoreLocationTest extends SapphireTest
 
         $lines = $location->addressLines();
         $this->assertContains('2611 JA Delft', $lines);
-        $this->assertSame('Voorstraat 12a', $location->StreetLine());
+        $this->assertSame('High Street 12a', $location->StreetLine());
         $this->assertSame('tel:0152123456', $location->PhoneLink());
         $this->assertStringContainsString('destination=52.011600%2C4.357100', $location->DirectionsLink());
         $this->assertSame('Manual', $location->GeoSource);
 
         $noGeo = $this->make(['Title' => 'No geo']);
-        $this->assertStringContainsString(rawurlencode('Voorstraat 12a'), $noGeo->DirectionsLink());
+        $this->assertStringContainsString(rawurlencode('High Street 12a'), $noGeo->DirectionsLink());
     }
 
     public function testExceptionValidationAndNormalisation(): void
@@ -154,7 +154,7 @@ class StoreLocationTest extends SapphireTest
         $node = $location->StructuredData();
         $this->assertSame('IceCreamShop', $node['@type']);
         $this->assertSame('Delft', $node['address']['addressLocality']);
-        $this->assertSame('Voorstraat 12a', $node['address']['streetAddress']);
+        $this->assertSame('High Street 12a', $node['address']['streetAddress']);
         $this->assertSame(52.0116, $node['geo']['latitude']);
 
         $byHours = [];
