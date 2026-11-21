@@ -108,8 +108,7 @@ SilverShop\StoreLocations\Control\StoreLocatorPageController:
 | `symbiote/silverstripe-gridfieldextensions` | drag-and-drop ordering of locations |
 
 Planned: geocoding and a consent-gated map, a store locator search ("near me", postcode), public holiday presets,
-and bridges for click-and-collect (pickup per location) and delivery-scheduling (closed days). See the roadmap in
-the suite journal.
+and bridges for click-and-collect (pickup per location) and delivery-scheduling (closed days).
 
 ## License
 
