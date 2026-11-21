@@ -2,6 +2,30 @@
  * Minimal, theme-neutral styling for silvershop-suite/store-locations. Uses em (not rem) so it scales with the
  * host theme. Turn off with StoreLocatorPageController.include_css: false when the theme styles it itself.
  */
+/* Page wrappers: a readable measure when the theme does not already wrap $Layout in a container. */
+.store-locator,
+.store-location {
+    box-sizing: border-box;
+    max-width: 75em;
+    margin-inline: auto;
+    padding: 1.5em 1em 3em;
+}
+
+.store-location__back {
+    margin: 0 0 .75em;
+    font-size: .875em;
+}
+
+.store-location__image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 26em;
+    object-fit: cover;
+    border-radius: .5em;
+    margin: 1em 0;
+}
+
 .store-locator__list {
     list-style: none;
     margin: 1.5em 0;
@@ -70,6 +94,7 @@
 }
 
 .store-hours__caption {
+    caption-side: top;
     text-align: left;
     font-weight: 600;
     padding-bottom: .4em;

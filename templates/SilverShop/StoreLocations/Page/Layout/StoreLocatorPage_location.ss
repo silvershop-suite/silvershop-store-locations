@@ -1,5 +1,6 @@
 <% with $Location %>
 <article class="store-location">
+    <p class="store-location__back"><a href="$Up.Link">&larr; <%t SilverShop\StoreLocations\Page\StoreLocatorPage.AllLocations 'All locations' %></a></p>
     <header class="store-location__header">
         <h1 class="store-location__title">$Title</h1>
         <% include SilverShop\StoreLocations\Includes\OpeningStatus %>
@@ -41,5 +42,3 @@
 <% end_with %>
 
 $LocationJsonLd
-
-<p class="store-location__back"><a href="$Link"><%t SilverShop\StoreLocations\Page\StoreLocatorPage.AllLocations 'All locations' %></a></p>
